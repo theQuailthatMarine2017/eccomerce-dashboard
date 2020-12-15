@@ -2,6 +2,8 @@
 import Vue from 'vue';
 import ShardsVue from 'shards-vue';
 import moment from 'moment';
+import VModal from 'vue-js-modal/dist/index.nocss.js'
+import 'vue-js-modal/dist/styles.css'
 
 // Styles
 import 'bootstrap/dist/css/bootstrap.css';
@@ -18,6 +20,7 @@ import Default from '@/layouts/Default.vue';
 ShardsVue.install(Vue);
 
 Vue.component('default-layout', Default);
+Vue.use(VModal,{ dialog: true });
 
 
 Vue.config.productionTip = false;

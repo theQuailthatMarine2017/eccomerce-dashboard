@@ -13,19 +13,31 @@ export default function () {
       name: 'blog-posts',
     },
   }, {
-    title: 'Manage Cakes',
+    title: 'Manage Products',
     htmlBefore: '<i class="material-icons">note_add</i>',
     to: {
       name: 'add-new-post',
     },
   }, {
-    title: 'Add New Cake',
+    title: 'Add New Product',
     htmlBefore: '<i class="material-icons">view_module</i>',
     to: {
       name: 'components-overview',
     },
   }, {
-    title: 'Manage Profile',
+    title: 'Add Deliver Rider',
+    htmlBefore: '<i class="material-icons">person</i>',
+    to: {
+      name: 'add-rider',
+    },
+  }, {
+    title: 'Manage Deliver Rider',
+    htmlBefore: '<i class="material-icons">person</i>',
+    to: {
+      name: 'manage-deliver-rider',
+    },
+  }, {
+    title: 'Manage Account',
     htmlBefore: '<i class="material-icons">table_chart</i>',
     to: {
       name: 'tables',

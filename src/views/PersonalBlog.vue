@@ -28,6 +28,10 @@
 
     </d-row>
 
+    <modal name="my-first-modal">
+        This is my first modal
+    </modal>
+
     <!-- <d-row>
       <!-- New Draft -->
       <!-- <d-col lg="4" md="6" sm="12" class="mb-4">

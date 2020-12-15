@@ -17,13 +17,18 @@
                 <!-- Email -->
                 <d-col md="6" class="form-group">
                   <label for="feEmail">Username</label>
-                  <d-form-input id="feEmail" value="sierra@example.com" />
+                  <d-form-input id="feEmail" placeholder="Enter Login Username" />
                 </d-col>
 
                 <!-- Password -->
                 <d-col md="6" class="form-group">
+                  <label for="fePassword">Contact</label>
+                  <d-form-input placeholder="Enter Mobile Number"  />
+                </d-col>
+
+                <d-col md="12" class="form-group">
                   <label for="fePassword">Password</label>
-                  <d-form-input type="password" id="fePassword" placeholder="Last Name" value="EX@MPL#P@$$w0RD" />
+                  <d-form-input type="password" id="fePassword" placeholder="Enter Login Password" />
                 </d-col>
 
               </d-form-row>

@@ -18,6 +18,7 @@
                 <tr>
                   <th scope="col" class="border-0">Name</th>
                   <th scope="col" class="border-0">Contact</th>
+                  <th scope="col" class="border-0">Edit</th>
                 </tr>
               </thead>
               <tbody v-for="item in ridersData" :v-key="item.riderName">

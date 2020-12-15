@@ -36,8 +36,8 @@
                   <td>{{item.customerLocation}}</td>
                   <td>{{item.quantity}}</td>
                   <td>{{item.cost}}</td>
-                  <td><button class="button">Complete</button></td>
-                  <td><button class="buttonCom">Delete</button></td>
+                  <td><button class="button" @click="completeOrder">Complete</button></td>
+                  <td><button class="buttonCom" @click="deleteOrder">Delete</button></td>
                 </tr>
               </tbody>
             </table>
@@ -47,6 +47,10 @@
     </div>
       </d-col>
     </d-row>
+
+    <v-dialog />
+        
+    </modal>
 
     <!-- Second Row of Posts -->
     <!-- <d-row>
@@ -242,6 +246,7 @@ export default {
       // PostsListTwo,
       // PostsListThree,
       // PostsListFour,
+      isImageModalActive: false,
       ordersData:[
         {
           product:'Jameson Cake 12KG',
@@ -266,6 +271,46 @@ export default {
       ]
     };
   },
+  methods:{
+    completeOrder() {
+        this.$modal.show('dialog',{title: 'Your Are About to Mark Order Complete',
+        text: 'Please Ensure Payment Has Been Made. Action Cannot Be Undone',
+        buttons: [
+          {
+            title: 'Cancel',
+            handler: () => {
+              this.$modal.hide('dialog')
+            }
+          },
+          {
+            title: 'Complete',
+            handler: () => {
+              alert('Like action')
+            }
+          }
+        ]
+        });
+    },
+    deleteOrder(){
+      this.$modal.show('dialog',{title: 'Your Are About to Delete An Order',
+        text: 'Please Ensure No Payment Has Been Made. Action Cannot Be Undone',
+        buttons: [
+          {
+            title: 'Cancel',
+            handler: () => {
+              this.$modal.hide('dialog')
+            }
+          },
+          {
+            title: 'Delete',
+            handler: () => {
+              alert('Like action')
+            }
+          }
+        ]
+        });
+    }
+  }
 };
 </script>
 

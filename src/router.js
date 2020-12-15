@@ -8,6 +8,8 @@ import Errors from './views/Errors.vue';
 import ComponentsOverview from './views/ComponentsOverview.vue';
 import Tables from './views/Tables.vue';
 import BlogPosts from './views/BlogPosts.vue';
+import ManageDeliveryRider from './views/ManageRiders.vue';
+import AddDeliveryRider from './views/AddRiders.vue';
 
 Vue.use(Router);
 
@@ -33,6 +35,16 @@ export default new Router({
       path: '/user-profile-lite',
       name: 'user-profile-lite',
       component: UserProfileLite,
+    },
+    {
+      path: '/manage-deliver-rider',
+      name: 'manage-deliver-rider',
+      component: ManageDeliveryRider,
+    },
+    {
+      path: '/add-rider',
+      name: 'add-rider',
+      component: AddDeliveryRider,
     },
     {
       path: '/add-new-post',

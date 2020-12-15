@@ -47,7 +47,7 @@ export default {
      */
     title: {
       type: String,
-      default: 'Account Details',
+      default: 'Your Account Details',
     },
   },
 };

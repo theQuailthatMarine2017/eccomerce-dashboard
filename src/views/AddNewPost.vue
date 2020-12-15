@@ -29,7 +29,7 @@
                   <td>{{item.description}}</td>
                   <td>{{item.available}}</td>
                   <td>{{item.cost}}</td>
-                  <td><button class="buttonEd">EDIT</button></td>
+                  <td><button class="buttonEd" @click="show">EDIT</button></td>
                   <td><button class="buttonDel">Delete</button></td>
                 </tr>
               </tbody>
@@ -46,6 +46,49 @@
         <anp-sidebar-categories />
       </d-col> -->
     </d-row>
+
+    <modal name="demo-login" transition="pop-out" :width="modalWidth" :focus-trap="true" :height="400">
+  <d-container fluid class="main-content-container px-4">
+
+      <d-row style="margin-top:15px;">
+        <d-col lg="12" class="mb-4">
+          
+
+            <!-- Form Example -->
+            <d-card-header class="border-bottom">
+              <h6 class="m-0">Add New Deliver Rider</h6>
+            </d-card-header>
+
+            <d-list-group flush>
+              <d-list-group-item class="p-3">
+                <d-row>
+                  <d-col>
+                    <d-form>
+
+                      <div class="form-group">
+                        <label for="feInputAddress">Rider Name</label>
+                        <d-input id="feInputAddress" />
+                      </div>
+
+                      <div class="form-group">
+                        <label for="feInputAddress2">Rider Contact</label>
+                        <d-input id="feInputAddress2" />
+                      </div>
+
+                    
+                      <d-button type="submit">Add Rider</d-button>
+                    </d-form>
+                  </d-col>
+                </d-row>
+              </d-list-group-item>
+            </d-list-group>
+
+       
+        </d-col>
+      </d-row>
+    </d-container>
+</modal>
+
   </d-container>
 </template>
 
@@ -81,7 +124,15 @@ export default {
         }
       ]
     }
-  }
+  },
+  methods: {
+        show () {
+            this.$modal.show('demo-login');
+        },
+        hide () {
+            this.$modal.hide('demo-login');
+        }
+    },
 };
 </script>
 
