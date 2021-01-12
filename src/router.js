@@ -10,6 +10,7 @@ import Tables from './views/Tables.vue';
 import BlogPosts from './views/BlogPosts.vue';
 import ManageDeliveryRider from './views/ManageRiders.vue';
 import AddDeliveryRider from './views/AddRiders.vue';
+import Login from './views/Login.vue';
 
 Vue.use(Router);
 
@@ -25,6 +26,11 @@ export default new Router({
     {
       path: '/',
       redirect: '/blog-overview',
+    },
+    {
+      path:'/login',
+      name:'login',
+      component: Login,
     },
     {
       path: '/blog-overview',

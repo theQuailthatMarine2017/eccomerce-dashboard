@@ -47,9 +47,32 @@
           <i class="material-icons text-danger">&#xE879;</i> Logout
         </d-dropdown-item>
       </d-collapse> -->
-    </li>
+    <!-- </li> -->
+    <button @click="log_out">Log Out</button>
   </d-navbar-nav>
 </template>
+
+<script>
+import { mapActions } from "vuex";
+
+export default {
+  
+  methods:{
+    ...mapActions(["logg_off"]),
+      log_out(){
+
+          this.logg_off()
+          this.$router.go()
+      }
+  },
+  computed: {
+    layout() {
+      return `${this.$route.meta.layout || 'default'}-layout`;
+    },
+  },
+};
+
+</script>
 
 <style>
   .nav-link:hover {

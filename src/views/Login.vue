@@ -1,25 +1,21 @@
 <template>
-<div>
-  <component :is="layout" v-if="signin">
-    <router-view/>
-  </component>
+   <div>
 
-  <div class="login-page" v-if="!signin">
+   <div class="login-page">
       <transition name="fade">
-         <div class="wallpaper-login"></div>
+         <div v-if="!registerActive" class="wallpaper-login"></div>
       </transition>
       <div class="wallpaper-register"></div>
 
       <div class="container">
          <div class="row">
             <div class="col-lg-4 col-md-6 col-sm-8 mx-auto">
-               <div class="card login" ref="signin">
+               <div v-if="!registerActive" class="card login" v-bind:class="{ error: emptyFields }">
                   <h3>Sign In</h3>
                   <form class="form-group">
-                     <input v-model="username" class="form-control" placeholder="Username" required>
-                     <input v-model="password" type="password" class="form-control" placeholder="Password" required>
-                     
-                     <input class="btn btn-primary" v-model="btnname" @click="login">
+                     <input v-model="emailLogin" type="email" class="form-control" placeholder="Email" required>
+                     <input v-model="passwordLogin" type="password" class="form-control" placeholder="Password" required>
+                     <input type="submit" class="btn btn-primary" @click="login">
                   </form>
                </div>
 
@@ -29,7 +25,7 @@
       </div>
    </div>
 
-</div>
+</div> 
 </template>
 
 <script>
@@ -38,65 +34,47 @@ import { mapGetters, mapActions } from "vuex";
 export default {
   data(){
     return{
-      signin:false,
-      btnname:'Sign In',
       username:null,
       password:null
     }
   },
-  created(){
-    if(localStorage.getItem('admin') != null){
-
-      this.signin = true
-
-    }
-  },
   methods:{
-    ...mapActions(["login_admin"]),
+      ...mapActions(["login_admin"]),
       login(){
 
-        if(this.username != null && this.password != null){
-
-          this.loader = this.$loading.show({
-                    // Optional parameters
-                    color: '#ff0000',
-                    container: this.$refs.signin.$el,
-                    canCancel:true,
-                    width: 75,
-                    height: 75,
-                    opacity: 0.7,
-                    
-                  });
-
-          this.login_admin({user:this.username,pass:this.password})
-
-        }
+        this.login_admin({username:this.username,password:this.password})
 
       }
   },
   computed: {
-    ...mapGetters(["success","err"]),
-    layout() {
-      return `${this.$route.meta.layout || 'default'}-layout`;
-    },
+    ...mapGetters(["success","err"])
   },
   watch:{
-    ...mapGetters(["success"]),
+      err(val) {
+      if (val != null) {
+          setTimeout(() => {
+            
+            //Notify Users
+
+            this.er = val
+          },1000)
+      }
+    },
     success(val){
         if(val === true){
             setTimeout(() => {
-            
-            //
-            this.loader.hide()
-            this.signin = true
 
+            //Go To Dahsboard
+            
           },1000)
         }
     }
-
   }
+
 };
 </script>
+
+
 
 <style lang="scss">
 p {
@@ -175,3 +153,4 @@ p {
 }
 
 </style>
+
