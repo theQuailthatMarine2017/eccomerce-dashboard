@@ -119,7 +119,7 @@ p {
    height: 100vh;
 
    .wallpaper-login {
-      background: url(https://images.pexels.com/photos/32237/pexels-photo.jpg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260)
+      background: url(https://c0.wallpaperflare.com/preview/198/355/741/food-homemade-dinner-party.jpg)
          no-repeat center center;
       background-size: cover;
       height: 100%;
@@ -137,7 +137,7 @@ p {
    }
    
    .wallpaper-register {
-      background: url(https://images.pexels.com/photos/533671/pexels-photo-533671.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260)
+      background: url(https://c0.wallpaperflare.com/preview/198/355/741/food-homemade-dinner-party.jpg)
          no-repeat center center;
       background-size: cover;
       height: 100%;

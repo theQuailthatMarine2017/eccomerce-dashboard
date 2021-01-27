@@ -20,11 +20,11 @@
 
       <d-row style="margin-top:15px;">
         <d-col lg="12" class="mb-4">
-          <d-card class="card-small">
+          <d-card ref="menu_form" class="card-small">
 
             <!-- Form Example -->
             <d-card-header class="border-bottom">
-              <h6 class="m-0">Add New Cake</h6>
+              <h6 class="m-0">Add New Product</h6>
             </d-card-header>
 
             <d-list-group>
@@ -44,21 +44,22 @@
                       </d-form-row> -->
 
                       <div class="form-group">
-                        <label>Cake Name</label>
-                        <d-input v-model="product.name" id="feInputAddress" />
+                        <label>Product Name</label>
+                        <d-input v-model="product.title" id="feInputAddress" />
                       </div>
 
                       <div class="form-group">
-                        <label>Description</label>
+                        <label>Product Description</label>
                         <d-input v-model="product.description" id="feInputAddress2" />
                       </div>
 
                       <div class="form-group">
-                        <label >Cost</label>
+                        <label >Product Cost</label>
                         <d-input v-model="product.cost" id="feInputAddress2" />
                       </div>
 
                       <!-- Custom File Upload -->
+                      
                   <strong class="text-muted d-block mb-2">Upload Photo</strong>
                   <div class="custom-file mb-3">
                     <input type="file" accept="image/jpeg" @change="onFileChange" class="custom-file-input" id="customFile2" />
@@ -84,7 +85,7 @@
                         </d-col>
                       
                       </d-form-row> -->
-                      <button @click="add_item">Add New Cake</button>
+                      <button @click="add_item">Add New Product</button>
                    
                   </d-col>
                 </d-row>
@@ -100,16 +101,18 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-
+import { uuid } from 'vue-uuid';
 
 export default {
   data(){
     return{
       product:{
-        name:null,
+        _id:uuid.v1(),
+        title:null,
         description:null,
         cost:null,
-        img:null
+        img:null,
+        available:true
       }
     }
   },
@@ -117,15 +120,19 @@ export default {
     ...mapActions(["add_Menu"]),
       add_item(){
 
+        this.loader = this.$loading.show({
+                    // Optional parameters
+                    color: '#ff0000',
+                    container: this.$refs.menu_form.$el,
+                    canCancel:true,
+                    width: 75,
+                    height: 75,
+                    opacity: 0.7,
+                    
+                  });
 
           this.add_Menu(this.product)
 
-          alert('You Have Succesfully Added New Meal To Menu');
-
-          this.product.name = null
-          this.product.description = null
-          this.product.cost = null
-          this.product.img = null
 
 
       },
@@ -146,6 +153,23 @@ export default {
 
         
       }
+  },
+  computed: {
+    ...mapGetters(["item_added"])
+  },
+  watch:{
+    ...mapGetters(["item_added"]),
+    item_added(val){
+      if(val === true){
+
+        console.log('watch activated')
+        this.loader.hide()
+
+        alert('Item Added Successfully!')
+        
+
+      }
+    }
   }
 };
 </script>

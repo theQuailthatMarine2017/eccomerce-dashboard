@@ -2,6 +2,7 @@
 import Vue from 'vue';
 import ShardsVue from 'shards-vue';
 import moment from 'moment';
+import FileSelector from 'vue-file-selector';
 import VModal from 'vue-js-modal/dist/index.nocss.js';
 import 'vue-js-modal/dist/styles.css';
 import Loading from 'vue-loading-overlay';
@@ -11,6 +12,7 @@ import VueToast from 'vue-toast-notification';
 import 'vue-toast-notification/dist/theme-sugar.css';
 import Notifications from 'vue-notification';
 import VueNativeNotification from 'vue-native-notification'
+import UUID from "vue-uuid";
 
 // Styles
 import 'bootstrap/dist/css/bootstrap.css';
@@ -28,6 +30,8 @@ import Default from '@/layouts/Default.vue';
 ShardsVue.install(Vue);
 
 // Init plugin
+Vue.use(FileSelector);
+Vue.use(UUID);
 Vue.use(Loading);
 Vue.use(VueNativeNotification, {
   // Automatic permission request before
