@@ -8,11 +8,11 @@
       </d-col>
     </d-row>
 
-    <div v-if="cakesData === null">
+    <div v-if="cakesData === null || cakesData === []">
 <h3>No Data Found!</h3>
     </div>
 
-    <d-row v-if="cakesData != null">
+    <d-row v-if="cakesData != null && !isMobile()">
       <!-- Editor -->
       <div class="col">
         <div class="card card-small mb-4">
@@ -56,6 +56,24 @@
       </d-col> -->
     </d-row>
 
+ <!-- if mobile -->
+    
+      <d-card v-if="isMobile()" v-for="item in cakesData" :v-key="item.name" ref="menu_form" class="card-small" style="margin-bottom:10px;">
+        <d-card-header class="border-bottom">
+              <h6 class="m-0">Product Details</h6>
+              <p>ProductID: {{item._id}}</p>
+            </d-card-header>
+      <div style="font-weight:bolder;" class="card-body p-1 pb-3">
+        <img width="180" height="110" :src="item.img" type="audio/mpeg">
+        <p>Product Name:<br>{{item.title}}</p>
+        <p>Product Description:<br>{{item.description}}</p>
+        <p>Product Cost:<br>{{item.price}}</p>
+        <p>Available:<br>{{item.available}}</p>
+        <d-button size="sm" @click="show(item)" style="margin:5px;background-color:#00BFFF;color:white;" class="btn-white"><i class="far fa-bookmark mr-1"></i>Edit Product</d-button>
+        <d-button size="sm" @click="showPhoto(item._id)" style="margin:5px;background-color:#FFA500;color:white;" class="btn-white"><i class="far fa-bookmark mr-1"></i>Change Photo</d-button>
+        <d-button size="sm" @click="deleteProduct(item._id)" style="margin:5px;background-color:#FF0000;color:white;" class="btn-white"><i class="far fa-bookmark mr-1"></i>Delete Product</d-button>
+      </div>
+      </d-card>
 
 <!-- Update Menu Section -->
     <modal name="demo-login" ref="updatemenu" transition="pop-out"  :focus-trap="true" :width="320" :height="550">
@@ -196,7 +214,13 @@ export default {
   },
   methods: {
     ...mapActions(["update_product","deleteproduct"]),
-
+    isMobile(){
+            if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+              return true
+            } else {
+              return false
+            }
+          },
         getMenu(){
 
               axios.get('http://localhost:5001/chellez-kitchen/us-central1/getMenu').then( response => {

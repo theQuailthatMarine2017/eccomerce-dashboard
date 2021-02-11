@@ -33,6 +33,16 @@ export default new Router({
       component: Login,
     },
     {
+      path:'/mass-messaging',
+      name:'Messaging',
+      component: AddDeliveryRider,
+    },
+    {
+      path:'/client-rewards',
+      name:'Rewards',
+      component: ManageDeliveryRider,
+    },
+    {
       path: '/blog-overview',
       name: 'blog-overview',
       component: PersonalBlog,

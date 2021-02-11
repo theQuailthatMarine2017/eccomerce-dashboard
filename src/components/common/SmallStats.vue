@@ -6,7 +6,6 @@
                     <span :class="['stats-small__label', 'text-uppercase', computedLabelClass]">{{ label }}</span>
                     <h6 :class="['stats-small__value', 'count', computedValueClass]">{{ value }}</h6>
                 </div>
-                
             </div>
             <canvas :height="computedCanvasHeight" ref="canvas" :class="[computedChartId]"></canvas>
         </d-card-body>

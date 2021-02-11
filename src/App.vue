@@ -14,7 +14,8 @@
          <div class="row">
             <div class="col-lg-4 col-md-6 col-sm-8 mx-auto">
                <div class="card login" ref="signin">
-                  <h3>Sign In</h3>
+                  <h3 style="text-align:center;">Ununuzi System Portal</h3>
+                  <h4 style="text-align:center;">Sign In</h4>
                   <form class="form-group">
                      <input v-model="username" class="form-control" placeholder="Username" required>
                      <input v-model="password" type="password" class="form-control" placeholder="Password" required>
@@ -119,7 +120,7 @@ p {
    height: 100vh;
 
    .wallpaper-login {
-      background: url(https://c0.wallpaperflare.com/preview/198/355/741/food-homemade-dinner-party.jpg)
+      background: url(https://img.freepik.com/free-photo/product-package-boxes-shopping-bag-cart-with-laptop-online-shopping-delivery-concept_38716-138.jpg?size=626&ext=jpghttps://image.freepik.com/free-photo/package-boxes-cart-with-laptop-computer-online-shopping-concept_38716-130.jpg)
          no-repeat center center;
       background-size: cover;
       height: 100%;
@@ -137,7 +138,7 @@ p {
    }
    
    .wallpaper-register {
-      background: url(https://c0.wallpaperflare.com/preview/198/355/741/food-homemade-dinner-party.jpg)
+      background: url(https://i.postimg.cc/ZKST6bgt/New-Project-17.jpg)
          no-repeat center center;
       background-size: cover;
       height: 100%;

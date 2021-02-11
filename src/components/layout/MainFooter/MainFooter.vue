@@ -1,14 +1,8 @@
 <template>
   <footer class="main-footer d-flex p-2 px-3 bg-white border-top">
     <div :class="[contained ? 'container' : 'container-fluid']">
-      <div class="row">
-        <ul class="nav">
-          <li v-for="(item, idx) in menuItems" :key="idx" class="nav-item">
-            <d-link class="nav-link" :to="item.to">{{ item.title }}</d-link>
-          </li>
-        </ul>
-        <span class="copyright ml-auto my-auto mr-2">{{ copyright }}</span>
-      </div>
+      <p>Ununuzi Web System 2021. <a href="https://thecodingguy.co.ke"><span class="copyright ml-auto my-auto mr-2">Developed and Maintained by @theCodingGuy</span></a></p>
+      
     </div>
   </footer>
 </template>

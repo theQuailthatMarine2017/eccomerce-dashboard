@@ -7,25 +7,37 @@ Vue.use(Vuex)
 export default {
   state: {
     menu:'',
-    orders:'',
+    orders:null,
     success:false,
     item_added:false,
     updated:false,
-    deleted:false
+    complete:false,
+    deleted:false,
+    order_delete:false
   },
   getters: {
     menu: state => state.menu,
+    order_delete: state => state.order_delete,
     orders: state => state.orders,
     updated: state => state.updated,
     success: state => state.success,
     item_added: state => state.item_added,
-    deleted: state => state.deleted
+    deleted: state => state.deleted,
+    complete: state => state.complete
   },
   mutations: {
     getMenu(state,data){
 
       state.menu = data;
 
+    },
+    Order_Complete(state,data){
+
+        state.complete = data;
+    },
+    order_delete(state,data){
+
+        state.order_delete = data
     },
     product_updated(state,data){
 
@@ -138,6 +150,58 @@ export default {
         });
 
     },
+    mark_complete({commit}, data){
+
+        commit("Order_Complete", false)
+
+        axios.post('http://localhost:5001/chellez-kitchen/us-central1/orderComplete', data).then( response => {
+
+          console.log('response recieved')
+          if(response.data.title === 'Order Completed!'){
+
+            
+                commit("Order_Complete", true)
+
+          }
+
+        }).catch( err => {
+
+
+            if(err.message === 'Request failed with status code 501'){
+
+            var error_email_mobile = 'Server Error. Please Try Again!'
+            commit("AddError", error_email_mobile)
+            }
+
+        });
+
+    },
+    delete_order({commit}, data){
+
+        commit("order_delete", false)
+
+        axios.post('http://localhost:5001/chellez-kitchen/us-central1/deleteOrder', data).then( response => {
+
+          console.log('response recieved')
+          if(response.data.title === 'Order Deleted!'){
+
+            
+                commit("order_delete", true)
+
+          }
+
+        }).catch( err => {
+
+
+            if(err.message === 'Request failed with status code 501'){
+
+            var error_email_mobile = 'Server Error. Please Try Again!'
+            commit("AddError", error_email_mobile)
+            }
+
+        });
+
+    },
     add_Menu({commit}, data){
 
         
@@ -189,13 +253,15 @@ export default {
 
 
     },
-    get_orders({commit}, data){
+    get_orders({commit}){
 
-        axios.get('https://fed12e045b55.ngrok.io/api/chellez/menu').then( response => {
+        commit("getOrders", null)
+        axios.get('http://localhost:5001/chellez-kitchen/us-central1/getOrder').then( response => {
 
             if(response != null){
 
-                commit("getOrders", response.data.menu)
+
+                commit("getOrders", response.data.orders)
     
               }
 
