@@ -9,27 +9,41 @@ export default {
     menu:'',
     orders:null,
     success:false,
-    item_added:false,
+    errors:null,
+    client_added:false,
     updated:false,
     complete:false,
     deleted:false,
-    order_delete:false
+    order_delete:false,
+    staff_admin_added:false,
+    staff_admin:null
   },
   getters: {
     menu: state => state.menu,
+    staff_admin_added: state => state.staff_admin_added,
     order_delete: state => state.order_delete,
     orders: state => state.orders,
     updated: state => state.updated,
     success: state => state.success,
-    item_added: state => state.item_added,
+    client_added: state => state.client_added,
     deleted: state => state.deleted,
-    complete: state => state.complete
+    complete: state => state.complete,
+    errors: state => state.errors,
+    staff_admin: state => state.staff_admin
   },
   mutations: {
     getMenu(state,data){
 
       state.menu = data;
 
+    },
+    getAdminStaff(state,data){
+
+      state.staff_admin = data;
+    },
+    AddError(state,data){
+
+      state.errors = data;
     },
     Order_Complete(state,data){
 
@@ -47,9 +61,13 @@ export default {
 
         state.deleted = data;
     },
-    Add_Menu(state,data){
+    Add_Client(state,data){
 
-        state.item_added = data;
+        state.client_added = data;
+    },
+    Add_Staff(state,data){
+
+      state.staff_admin_added = data
     },
     login_success(state,data){
 
@@ -92,6 +110,29 @@ export default {
 
       })
     },
+    get_admin_staff({commit}){
+
+      commit("getAdminStaff", null)
+    axios.get('http://localhost:5001/chellez-kitchen/us-central1/getAdminStaff').then( response => {
+
+        if(response != null){
+
+          console.log(response.data.menu_final)
+          commit("getAdminStaff", response.data.menu_final)
+
+        }
+
+    }).catch( err => {
+
+
+      if(err.message === 'Request failed with status code 501'){
+
+        var error_email_mobile = 'Server Error. Please Try Again!'
+        commit("AddError", error_email_mobile)
+      }
+
+    })
+  },
     update_product({commit}, data){
 
         commit("product_updated", false)
@@ -101,8 +142,8 @@ export default {
         axios.post('http://localhost:5001/chellez-kitchen/us-central1/updateMenuItem', data).then( response => {
 
           console.log('response recieved')
-          if(response.data.title === 'Product Updated!'){
-              
+          if(response.data.title === 'Client Updated!'){
+            
             commit("product_updated", true)
 
           }
@@ -132,7 +173,7 @@ export default {
         axios.post('http://localhost:5001/chellez-kitchen/us-central1/deleteMenuItem', data_id).then( response => {
 
           console.log('response recieved')
-          if(response.data.title === 'Item Deleted!'){
+          if(response.data.title === 'Client Deleted!'){
               
             commit("product_deleted", true)
 
@@ -202,21 +243,22 @@ export default {
         });
 
     },
-    add_Menu({commit}, data){
+    add_Client({commit}, data){
 
         
-        commit("Add_Menu", false)
+        commit("Add_Client", false)
         console.log('creating')
 
         axios.post('http://localhost:5001/chellez-kitchen/us-central1/addMenuItem', data).then( response => {
 
           console.log('response recieved')
-          if(response.data.title === 'Item Added To Menu!'){
+          if(response.data.title === 'New Client Created!'){
 
+            commit("Add_Client", true)
             
-                commit("Add_Menu", true)
-
           }
+          
+          
 
       }).catch( err => {
 
@@ -230,6 +272,35 @@ export default {
       });
 
     },
+    add_Admin_Staff({commit}, data){
+
+        
+      commit("Add_Staff", false)
+      console.log('creating admin...')
+
+      axios.post('http://localhost:5001/chellez-kitchen/us-central1/createsAdmin', data).then( response => {
+
+        console.log('response recieved')
+        if(response.data.title === 'admin created'){
+
+          commit("Add_Staff", true)
+          
+        }
+        
+        
+
+    }).catch( err => {
+
+
+      if(err.message === 'Request failed with status code 501'){
+
+        var error_email_mobile = 'Server Error. Please Try Again!'
+        commit("AddError", error_email_mobile)
+      }
+
+    });
+
+  },
     completeOrder({commit}, data){
 
         axios.post('https://fed12e045b55.ngrok.io/api/chellez/menu').then( response => {
@@ -278,23 +349,40 @@ export default {
     },
     login_admin({commit}, data){
 
-        
+        commit("AddError", null);
+
         axios.post('http://localhost:5001/chellez-kitchen/us-central1/loginAdmin',data).then( response => {
 
             console.log('kjvjghgchchf' + response.data)
             if(response.data.title === 'admin found'){
 
-                localStorage.setItem('admin', response.data.username)
+                localStorage.setItem('account', JSON.stringify(response.data.admin_details))
+                localStorage.setItem('admin_staff', response.data.admin_details.fullnames)
+                localStorage.setItem('department', response.data.admin_details.department)
+                localStorage.setItem('privilege', response.data.admin_details.type)
+
                 commit("login_success", true)
     
               }
         }).catch( err => {
 
+          
+            if(err.message === 'Request failed with status code 403'){
+
+              console.log(err.message)
+              commit("AddError", 'Admin Not Found!')
+            }
 
             if(err.message === 'Request failed with status code 501'){
-    
-              var error_email_mobile = 'Server Error. Please Try Again!'
-              commit("AddError", error_email_mobile)
+
+              console.log(err.message)
+              commit("AddError", 'Internal Server Error. Contact Admin.')
+            }
+
+            if(err.message === 'Request failed with status code 401'){
+
+              console.log(err.message)
+              commit("AddError", 'Wrong Password!')
             }
     
           })

@@ -7,22 +7,40 @@ export default function () {
     htmlBefore: '<i class="material-icons">edit</i>',
     htmlAfter: '',
   }, {
+    title: 'Add New Client',
+    htmlBefore: '<i class="material-icons">add_task</i>',
+    to: {
+      name: 'components-overview',
+    },
+  },{
+    title: 'Add Staff / Admin',
+    htmlBefore: '<i class="material-icons">add_task</i>',
+    to: {
+      name: 'add-staff-admin',
+    },
+  },{
     title: 'Manage Orders',
     htmlBefore: '<i class="material-icons">inventory</i>',
     to: {
       name: 'blog-posts',
     },
   },{
-    title: 'Add New Product',
-    htmlBefore: '<i class="material-icons">add_task</i>',
+    title: 'Manage Appointments',
+    htmlBefore: '<i class="material-icons">inventory</i>',
     to: {
-      name: 'components-overview',
+      name: 'appointments',
     },
-  }, {
-    title: 'Manage Products',
+  },{
+    title: 'Manage Clients',
     htmlBefore: '<i class="material-icons">inventory</i>',
     to: {
       name: 'add-new-post',
+    },
+  },{
+    title: 'Manage Staff / Admin',
+    htmlBefore: '<i class="material-icons">inventory</i>',
+    to: {
+      name: 'staff-admin',
     },
   },
   {
@@ -37,6 +55,13 @@ export default function () {
     htmlBefore: '<i class="material-icons">emoji_events</i>',
     to: {
       name: 'Rewards',
+    },
+  },
+  {
+    title: 'My Account',
+    htmlBefore: '<i class="material-icons">emoji_events</i>',
+    to: {
+      name: 'my-account',
     },
   }];
 }

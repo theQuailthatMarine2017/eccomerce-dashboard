@@ -13,6 +13,21 @@ import 'vue-toast-notification/dist/theme-sugar.css';
 import Notifications from 'vue-notification';
 import VueNativeNotification from 'vue-native-notification'
 import UUID from "vue-uuid";
+import VueTelInput from 'vue-tel-input';
+import 'vue-tel-input/dist/vue-tel-input.css';
+import PrettyCheckbox from 'pretty-checkbox-vue';
+import vSelect from 'vue-select';
+import  vueble  from  'vueble'
+import 'vue-select/dist/vue-select.css';import "@fortawesome/fontawesome-free/css/all.min.css";
+import 'vue-jd-table/dist/jd-table.min.css';
+
+
+
+
+Vue.use(PrettyCheckbox);
+Vue.use(vueble);
+Vue.use(VueTelInput);
+Vue.component('v-select', vSelect)
 
 // Styles
 import 'bootstrap/dist/css/bootstrap.css';

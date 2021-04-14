@@ -4,48 +4,98 @@
     <d-row no-gutters class="page-header py-4">
       <!-- Page Title -->
       <d-col col sm="4" class="text-center text-sm-left mb-4 mb-sm-0">
-        <h3 class="page-title">Manage Products</h3>
-      </d-col>
-    </d-row>
+        <h3 class="page-title">Manage Business / Services</h3>
 
-    <div v-if="cakesData === null || cakesData === []">
+        
+        <div v-if="cakesData != null"  style="margin-top:15px;">
+        <d-row>
+          <d-col col lg="12">
+        <i style="color:#0386ac;" class="fa fa-search fa-lg mr-1"></i><input style="border-color:#0386ac;height:33px;width:300px;padding:13px;border:0;border-radius:12px;" placeholder="Search Business by Name or Location..." type="text"  v-model="query.search_input">
+        <d-button @click="exportCSV(filteredRows)" style="margin-top:10px;margin-bottom:0;background-color:green;color:white;" class="btn-white"><i class="fa fa-file-export mr-1"></i>Export Data as CSV</d-button>
+          </d-col>
+
+          <!-- <d-col col lg="12">
+            <d-button @click="updateClient" style="width:230px;background-color:green;color:white;" class="btn-white"><i class="fa fa-user-plus mr-1"></i>Update Business / Service</d-button>
+          </d-col> -->
+        </d-row>
+
+        </div>
+
+
+      </d-col>
+
+    </d-row>
+    
+
+    <div v-if="cakesData === null  && denied === false">
 <h3>No Data Found!</h3>
     </div>
 
-    <d-row v-if="cakesData != null && !isMobile()">
+    <div style="border-radius:12px;padding:40px;background-color:red;text-align:center;" v-if="denied === true">
+      <img width="110" height="105" src="https://i.postimg.cc/KvNgwByj/toppng-com-abort-delete-cancel-icon-cross-no-access-denied-deny-access-icon-719x720.png">
+<h5 style="color:white;">You Are Not Allowed To View This Page!<br> Contact IT Admin To Be Granted Access!</h5>
+    </div>
+
+    <!-- <d-container style="margin:0px;">
+    <input placeholder="Search Client Name..." type="text" style="width:340px;" v-model="query.search_input">
+    <d-button size="md" style="margin:5px;background-color:#00BFFF;color:white;" class="btn-white"><i class="far fa-bookmark mr-1"></i>Search Client</d-button>
+    </d-container> -->
+
+    <d-row v-if="cakesData != null">
       <!-- Editor -->
-      <div class="col">
-        <div class="card card-small mb-4">
-          <div class="card-body p-0 pb-3 text-center">
-            <table class="table mb-0">
-              <thead class="bg-light">
+      
+            <table style="border-color:#0386ac;border-width:7px;">
+              <thead style="background-color:#0386ac;color:white;font-size:18px;font-family:Trebuchet MS;">
                 <tr>
-                  <th scope="col" class="border-0">Image</th>
-                  <th scope="col" class="border-0">Product</th>
-                  <th scope="col" class="border-0">Description</th>
-                  <th scope="col" class="border-0">Available</th>
-                  <th scope="col" class="border-0">Cost</th>
+                  
+                  <th scope="col" class="border-0">Logo</th>
+                  <th scope="col" class="border-0">Name</th>
+                  <th scope="col" class="border-0">Phone</th>
+                  <th scope="col" class="border-0">Email</th>
+                  <th scope="col" class="border-0">Location</th>
+                  <th scope="col" class="border-0">Suspended</th>
+                  <th scope="col" class="border-0">Assigned By</th>
                   <th scope="col" class="border-0">Actions</th>
                 </tr>
               </thead>
-              <tbody v-for="item in cakesData" :v-key="item.product">
-                <tr>
-                  <td> <img width="180" height="110" :src="item.img" type="audio/mpeg"></td>
-                  <td>{{item.title}}</td>
-                  <td>{{item.description}}</td>
-                  <td>{{item.available}}</td>
-                  <td>KSH {{item.price}}</td>
+              <tbody>
+
+                <tr :v-if="query.search_input != null" v-for="(row, index) in filteredRows" :key="index">
+                  <td><img width="110" height="105" :src="row.logo" type="audio/mpeg"></td>
+                  <td style="width:200px;height:10px;" v-html="highlightMatches(row.name)"></td>
+                  <td v-html="row.mobile"></td>
+                  <td v-html="row.email"></td>
+                  <td v-html="highlightMatches(row.location)"></td>
+                  <td v-html="row.suspended"></td>
+                  <td style="width:200px;" v-html="row.assignedBy"></td>
                   <td>
-                    <d-button size="sm" @click="show(item)" style="margin:5px;background-color:#00BFFF;color:white;" class="btn-white"><i class="far fa-bookmark mr-1"></i>Edit Product</d-button>
-                    <d-button size="sm" @click="showPhoto(item._id)" style="margin:5px;background-color:#FFA500;color:white;" class="btn-white"><i class="far fa-bookmark mr-1"></i>Change Photo</d-button>
-                    <d-button size="sm" @click="deleteProduct(item._id)" style="margin:5px;background-color:#FF0000;color:white;" class="btn-white"><i class="far fa-bookmark mr-1"></i>Delete Product</d-button>
+                    <d-button size="sm" @click="show(row)" style="width:130px; margin:5px;background-color:#00BFFF;color:white;" class="btn-white"><i class="far fa-edit mr-1"></i>Manage Client</d-button>
+                    <d-button size="sm" style="width:130px;margin:5px;background-color:green;color:white;" class="btn-white"><i class="fa fa-eye mr-1"></i>View Sales</d-button>
+                    <d-button size="sm" @click="deleteProduct(row._id)" style="width:130px;margin:5px;background-color:#FF0000;color:white;" class="btn-white"><i class="fa fa-trash-alt mr-1"></i>Delete Client</d-button>
                   </td>
                 </tr>
+                
+                <!-- <tr>
+                
+
+                  <td><img width="180" height="110" :src="item.logo" type="audio/mpeg"></td>
+                  <td>{{item.name}}</td>
+                  <td>{{item.mobile}}</td>
+                  <td>{{item.email}}</td>
+                  <td>{{item.kra}}</td>
+                  <td>{{item.location}}</td>
+                  <td>{{item.vetNo}}</td>
+                  <td>{{item.suspended}}</td>
+                  <td>
+                    <d-button size="sm" @click="show(item)" style="margin:5px;background-color:#00BFFF;color:white;" class="btn-white"><i class="far fa-bookmark mr-1"></i>Edit Client</d-button>
+                    <d-button size="sm" style="margin:5px;background-color:green;color:white;" class="btn-white"><i class="far fa-bookmark mr-1"></i>View Sales</d-button>
+                    <d-button size="sm" @click="showPhoto(item._id)" style="margin:5px;background-color:#FFA500;color:white;" class="btn-white"><i class="far fa-bookmark mr-1"></i>Change Photo</d-button>
+                    <d-button size="sm" @click="deleteProduct(item._id)" style="margin:5px;background-color:#FF0000;color:white;" class="btn-white"><i class="far fa-bookmark mr-1"></i>Delete Client</d-button>
+                  </td>
+                </tr> -->
               </tbody>
             </table>
-          </div>
-        </div>
-      </div>
+               
     </d-row>
       
 
@@ -58,7 +108,7 @@
 
  <!-- if mobile -->
     
-      <d-card v-if="isMobile()" v-for="item in cakesData" :v-key="item.name" ref="menu_form" class="card-small" style="margin-bottom:10px;">
+      <!-- <d-card v-if="isMobile()" v-for="item in cakesData" :v-key="item.name" ref="menu_form" class="card-small" style="margin-bottom:10px;">
         <d-card-header class="border-bottom">
               <h6 class="m-0">Product Details</h6>
               <p>ProductID: {{item._id}}</p>
@@ -73,91 +123,29 @@
         <d-button size="sm" @click="showPhoto(item._id)" style="margin:5px;background-color:#FFA500;color:white;" class="btn-white"><i class="far fa-bookmark mr-1"></i>Change Photo</d-button>
         <d-button size="sm" @click="deleteProduct(item._id)" style="margin:5px;background-color:#FF0000;color:white;" class="btn-white"><i class="far fa-bookmark mr-1"></i>Delete Product</d-button>
       </div>
-      </d-card>
-
-<!-- Update Menu Section -->
-    <modal name="demo-login" ref="updatemenu" transition="pop-out"  :focus-trap="true" :width="320" :height="550">
-  <d-container fluid class="main-content-container px-4">
-
-      <d-row style="margin-top:15px;">
-        <d-col lg="12" class="mb-4">
-          
-
-            <!-- Form Example -->
-            <d-card-header class="border-bottom">
-              <h6 class="m-0">Update Product</h6>
-            </d-card-header>
-
-            <d-list-group>
-              <d-list-group-item class="p-3">
-                <d-row>
-                  <d-col v-if="productUpdate != null">
-
-                    <!-- <strong class="text-muted d-block mb-2">Product Photo</strong>
-                  <div class="custom-file mb-3">
-                    <input type="file" accept="image/jpeg" :v-model="productUpdate.img" @change="onFileChange" class="custom-file-input" id="customFile2" />
-                    <label class="custom-file-label">Choose file...</label>
-                    <p style="font-weight:bolder;">If You Do Not Want To Change Photo Don't Click</p>
-                    
-                  </div> -->
-                      <div class="form-group">
-                        <label for="feInputAddress">Product Title</label>
-                        <d-input id="feInputAddress" v-model="productUpdate.title"/>
-                      </div>
-
-                      <div class="form-group">
-                        <label for="feInputAddress2">Product Description</label>
-                        <d-input id="feInputAddress2" v-model="productUpdate.description" />
-                      </div>
-
-                      <div class="form-group">
-                        <label for="feInputAddress2">Product Cost</label>
-                        <d-input id="feInputAddress2" v-model="productUpdate.price" />
-                      </div>
-
-                      <div class="form-group">
-                        <p style="font-weight:bold;">Product Availabilty</p>
-                        <input type="radio" id="productUpdate.available" name="Availabilty" :value="true" v-model="productUpdate.available" />
-                        <label for="productUpdate.available">True</label><br>
-                        <input type="radio" id="!available" name="Availabilty" :value="false" v-model="productUpdate.available" />
-                        <label for="!available">False</label><br>
-                      </div>
-
-                    
-                      <d-button @click="updateProduct(productUpdate)">Update Product</d-button>
-                  
-                  </d-col>
-                </d-row>
-              </d-list-group-item>
-            </d-list-group>
-
-       
-        </d-col>
-      </d-row>
-    </d-container>
-</modal>
+      </d-card> -->
 
 
 <!-- Delete Product Modal -->
 <modal name="demo-delete" ref="deleteproduct" transition="pop-out"  :focus-trap="true" :height="170" :width="300" >
 
   <d-card-header class="border-bottom">
-              <h6 class="m-0" style="text-align:center;">Delete Product?</h6>
+              <h6 class="m-0" style="text-align:center;">Delete Business / Service?</h6>
             </d-card-header>
             <d-container fluid class="main-content-container px-4">
               <h6 class="m-0" style="text-align:center;">Action Cannot Be Undone</h6>
             </d-container>
             <d-container fluid class="main-content-container px-4" style="text-align:center;">
-              <d-button @click="deleteFinal" style="margin:5px;background-color:red;">Delete Product</d-button>
+              <d-button @click="deleteFinal" style="margin:5px;background-color:red;">Delete Business / Service</d-button>
             <d-button @click="cancelDelete">Cancel</d-button>
             </d-container>
 
 </modal>
 
-<!-- Change Photo Modal -->
+<!-- Change Photo Modal
 <modal name="demo-photo" ref="updatephoto" transition="pop-out"  :focus-trap="true" :height="170" :width="300" >
             <d-card-header class="border-bottom">
-              <h6 class="m-0" style="text-align:center;">Upload New Photo</h6>
+              <h6 class="m-0" style="text-align:center;">Upload New Business Logo</h6>
             </d-card-header>
             <d-container style="margin-top:12px;" fluid class="main-content-container px-4">
                   <div class="custom-file mb-3">
@@ -167,11 +155,11 @@
                   </div>
             </d-container>
             <d-container fluid class="main-content-container px-4" style="text-align:center;">
-              <d-button @click="changePhoto" style="margin:5px;background-color:red;">Change Photo</d-button>
+              <d-button @click="changePhoto" style="margin:5px;background-color:red;">Change Logo</d-button>
             <d-button @click="cancelPhoto">Cancel</d-button>
             </d-container>
 
-</modal>
+</modal> -->
 
   </d-container>
 </template>
@@ -184,6 +172,8 @@ import Editor from '@/components/add-new-post/Editor.vue';
 
 import 'quill/dist/quill.snow.css';
 import axios from 'axios';
+import Papa from "papaparse";
+
 
 export default {
   components: {
@@ -191,25 +181,49 @@ export default {
     anpSidebarActions: SidebarActions,
     anpSidebarCategories: SidebarCategories,
   },
+  created(){
+
+    if(localStorage.getItem('privilege') === 'Admin'){
+
+        this.getMenu()
+
+        this.denied = false
+      }
+    
+  },
   mounted(){
 
-    this.getMenu()
+     if(localStorage.getItem('privilege') === 'Admin'){
+
+        this.getMenu()
+        this.denied = false
+
+      }
 
   },
   data(){
     return{
       cakesData:null,
-      itemDelete:null,
-      productUpdate:{
-        title:'',
-        description:'',
-        price:'',
-        availability:''
-      },
-      newProductImg:{
-        _id:'',
-        img:null
-      }
+      search: '',
+      denied:true,
+      // headers: [
+      //   { text: 'Logo', value: 'logo' },
+      //   { text: 'Name', value: 'name' },
+      //   { text: 'Email', value: 'nature' },
+      //   { text: 'Website', value: 'mobile' },
+      //   { text: 'Action', value: 'email', sortable: false },
+      //   { text: 'KRA', value: 'kra' },
+      //   { text: 'Directors', value: 'directors' },
+      //   { text: 'Website', value: 'website' },
+      //   { text: 'Location', value: 'location' },
+      //   { text: 'vetNo', value: 'vetNo' },
+      //   { text: 'Suspended', value: 'suspended' },
+      //   { text: 'Action', value: 'action', sortable: false }
+      // ],
+      query: {
+          search_input: ''
+        },
+      itemDelete:null
     }
   },
   methods: {
@@ -221,13 +235,31 @@ export default {
               return false
             }
           },
+          exportCSV(csv){
+
+            var blob = new Blob([Papa.unparse(csv)], { type: 'text/csv;charset=utf-8;' });
+
+            var link = document.createElement("a");
+            var url = URL.createObjectURL(blob);
+            link.setAttribute("href", url);
+            link.setAttribute("download", 'filename.csv');
+            link.style.visibility = 'hidden';
+
+
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+
+          },
         getMenu(){
 
               axios.get('http://localhost:5001/chellez-kitchen/us-central1/getMenu').then( response => {
 
                   if(response != null){
 
+                    
                     console.log(response.data.menu_final)
+                    
                     this.cakesData = response.data.menu_final
 
                   }
@@ -244,81 +276,92 @@ export default {
               })
 
         },
-        onFileChange(e){
+        // onFileChange(e){
 
-            var files = e.target.files[0];
+        //     var files = e.target.files[0];
 
-            //Convert Image To Base 64 String For Easy Storage
-            const reader = new FileReader()
 
-            reader.readAsDataURL(files)
+        //     //Convert Image To Base 64 String For Easy Storage
+        //     const reader = new FileReader()
 
-            reader.onload = ()=> {
+        //     reader.readAsDataURL(files)
 
-              this.newProductImg.img = reader.result
+        //     reader.onload = ()=> {
 
-              console.log(this.newProductImg.img)
-            };
+        //       this.newProductImg.img = reader.result
 
+        //       console.log(this.newProductImg.img)
+        //     };
+
+        // },
+        // showPhoto(id){
+
+        //   this.newProductImg._id = id
+
+        //   this.$modal.show('demo-photo');
+        // },
+        highlightMatches(text) {
+          const matchExists = text.toLowerCase().includes(this.query.search_input.toLowerCase());
+          if (!matchExists) return text;
+
+          const re = new RegExp(this.query.search_input, 'ig');
+          return text.replace(re, matchedText => `<strong>${matchedText}</strong>`);
         },
-        showPhoto(id){
+        // changePhoto(){
 
-          this.newProductImg._id = id
+        //   if(this.newProductImg.img != null && this.newProductImg.id != ''){
 
-          this.$modal.show('demo-photo');
-        },
-        cancelPhoto(){
-          
-        },
-        changePhoto(){
+        //     this.$modal.hide('demo-photo');
 
-          if(this.newProductImg.img != null && this.newProductImg.id != ''){
-
-            this.$modal.hide('demo-photo');
-
-            this.loader = this.$loading.show({
-                    // Optional parameters
-                    color: '#ff0000',
-                    container: this.$refs.updatephoto.$el,
-                    canCancel:true,
-                    width: 75,
-                    height: 75,
-                    opacity: 0.7,
+        //     this.loader = this.$loading.show({
+        //             // Optional parameters
+        //             color: '#ff0000',
+        //             container: this.$refs.updatephoto.$el,
+        //             canCancel:true,
+        //             width: 75,
+        //             height: 75,
+        //             opacity: 0.7,
                     
-                  });
+        //           });
 
-            this.update_product(this.newProductImg)
+        //     this.update_product(this.newProductImg)
 
-          }
-        },
-        show(item) {
-
-          console.log("update" + item)
-          this.productUpdate = item
-          this.$modal.show('demo-login');
+        //   }
+        // },
+        show(row) {
+          //Pass row._id as the query string for URL and pass the client update object
+          localStorage.setItem('client',JSON.stringify(row))
+          this.$router.push({ name: 'manage-client', query: { client: row._id, name:row.name }})
 
         },
         hide () {
             this.$modal.hide('demo-login');
         },
-        updateProduct(productUpdate){
+        isMobile(){
+            if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+              return true
+            } else {
+              return false
+            }
+          },
+        // updateProduct(productUpdate){
 
-          console.log(productUpdate)
+        //   console.log(productUpdate)
 
-          this.loader = this.$loading.show({
-                    // Optional parameters
-                    color: '#ff0000',
-                    container: this.$refs.updatemenu.$el,
-                    canCancel:true,
-                    width: 75,
-                    height: 75,
-                    opacity: 0.7,
+        //   this.loader = this.$loading.show({
+        //             // Optional parameters
+        //             color: '#ff0000',
+        //             container: this.$refs.updatemenu.$el,
+        //             canCancel:true,
+        //             width: 75,
+        //             height: 75,
+        //             opacity: 0.7,
                     
-                  });
+        //           });
 
-          this.update_product(productUpdate)
+        //   this.update_product(productUpdate)
 
-        },
+        // },
         deleteProduct(item_id){
 
           this.itemDelete = item_id
@@ -355,35 +398,33 @@ export default {
         }
     },
     computed:{
-      ...mapGetters(["updated","deleted"])
+      ...mapGetters(["deleted"]),
+      filteredRows(){
+        return this.cakesData.filter((row) => {
+
+          const client_name = row.name.toLowerCase();
+          const client_location = row.location.toLowerCase();
+
+          const searchTerm = this.query.search_input.toLowerCase();
+
+          return client_name.includes(searchTerm) || client_location.includes(searchTerm);
+
+        });
+      }
     },
     watch:{
-      updated(val){
-        if(val === true){
-
-          console.log('updated product')
-          this.loader.hide()
-
-          this.$modal.hide('demo-login');
-
-          this.getMenu()
-
-          alert('Product Updated Successfully!')
-          
-
-        }
-      },
+      ...mapGetters(["deleted"]),
       deleted(val){
         if(val === true){
 
-          console.log('deleted product')
+          console.log('deleted client')
           this.loader.hide()
 
           this.$modal.hide('demo-delete');
 
           this.getMenu()
 
-          alert('Product Deleted Successfully!')
+          alert('Client Deleted Successfully!')
           
 
         }
@@ -424,4 +465,161 @@ export default {
   font-size: 14px;
   font-family: '微软雅黑',arail;
 }
+
+table {
+    width: 100%;
+    border-spacing: 0;
+    border: 1px solid #DDDDDD;
+    border-radius: 4px;
+}
+
+table caption {
+    background-color: #333333;
+    color: #FFFFFF;
+    padding: 8px;
+    border-radius: 4px;
+    margin-bottom: 10px;
+}
+
+thead {
+    text-align: left;
+}
+
+thead th:first-child {
+    border-radius: 4px 0 0 0;
+}
+    
+thead th:last-child {
+    border-radius: 0 4px 0 0;
+}
+
+thead th {
+    padding: 8px;
+}
+
+thead th + th {
+    border-left: 1px solid #DDDDDD;
+}
+
+tbody tr:nth-of-type(odd) {
+    background: #F9F9F9;
+}
+
+tbody tr:last-child td:first-child {
+    border-radius: 0 0 0 4px;
+}
+
+tbody tr:last-child td:last-child {
+    border-radius: 0 0 4px 0;
+}
+
+tbody tr td {
+    padding: 8px;
+    border-top: 1px solid #DDDDDD;
+}
+
+tbody tr td + td {
+    border-left: 1px solid #DDDDDD;
+}
+
+
+/* Large desktop */
+@media (min-width: 1200px) {
+    
+    
+    
+}
+
+/* Portrait tablet to landscape and desktop */
+@media (min-width: 768px) and (max-width: 979px) {
+    
+    table {
+        border: none;
+    }
+    
+    table, caption, thead, tbody, th, td, tr {
+        display: block;
+    }
+    
+    thead { 
+        display: none;
+    }
+    
+    tbody tr {
+        border: 1px solid #DDDDDD;
+        border-radius: 5px;
+    }
+    
+    tbody tr + tr {
+        margin-top: 10px;
+    }
+    
+    tbody tr td {
+        border: none;
+    }
+    
+    tbody tr td + td {
+        border-top: 1px solid #DDDDDD;
+        border-left: none;
+    }
+    
+    tbody tr td:before {
+        font-weight: bold;
+        float: left;
+        width: 30%;
+        content: attr(data-head);
+    }
+    
+}
+
+/* Landscape phone to portrait tablet */
+@media (max-width: 767px) {
+    
+    table {
+        border: none;
+    }
+    
+    table, caption, thead, tbody, th, td, tr {
+        display: block;
+    }
+    
+    thead { 
+        display: none;
+    }
+    
+    tbody tr {
+        border: 1px solid #DDDDDD;
+        border-radius: 5px;
+    }
+    
+    tbody tr + tr {
+        margin-top: 10px;
+    }
+    
+    tbody tr td {
+        border: none;
+    }
+    
+    tbody tr td + td {
+        border-top: 1px solid #DDDDDD;
+        border-left: none;
+    }
+    
+    tbody tr td:before {
+       font-size: 0.7em;
+       font-weight: bold;
+       display: block;
+       content: attr(data-head);
+    }
+    
+}
+
+/* Landscape phones and down */
+@media (max-width: 480px) {
+    
+    
+    
+}
+
+
 </style>

@@ -1,32 +1,20 @@
 <template>
   <d-container fluid class="main-content-container px-4" ref="orders">
     <!-- Page Header -->
-    
-      <d-row no-gutters class="page-header py-4">
-      <!-- Page Title -->
-      <d-col col sm="4" class="text-center text-sm-left mb-4 mb-sm-0">
-        <h3 class="page-title">Manage Orders</h3>
+    <div class="page-header row no-gutters py-4">
+      <div class="col-12 col-sm-4 text-center text-sm-left mb-0">
+        <h3 class="page-title">Manage Appointments</h3>
 
-        
-        <div style="margin-top:15px;">
+         <div style="margin-top:15px;">
         <d-row>
           <d-col col lg="12">
-        <i style="color:#0386ac;" class="fa fa-search fa-lg mr-1"></i><input style="border-color:#0386ac;height:33px;width:300px;padding:13px;border:0;border-radius:12px;" placeholder="Search Business by Name or Location..." type="text"  v-model="query.search_input">
+        <i style="color:#0386ac;" class="fa fa-search fa-lg mr-1"></i><input style="border-color:#0386ac;height:33px;width:300px;padding:13px;border:0;border-radius:12px;" placeholder="Search Using Customer Name or Mobile..." type="text"  v-model="query.search_input">
         <d-button  style="margin-top:10px;margin-bottom:0;background-color:green;color:white;" class="btn-white"><i class="fa fa-file-export mr-1"></i>Export Data as CSV</d-button>
           </d-col>
-
-          <!-- <d-col col lg="12">
-            <d-button @click="updateClient" style="width:230px;background-color:green;color:white;" class="btn-white"><i class="fa fa-user-plus mr-1"></i>Update Business / Service</d-button>
-          </d-col> -->
         </d-row>
-
         </div>
-
-
-      </d-col>
-
-    </d-row>
-   
+      </div>
+    </div>
 <div v-if="ordersData === null || ordersData === []">
 <h3>No Data Found!</h3>
     </div>
@@ -41,12 +29,11 @@
             <table class="table mb-0">
               <thead class="bg-light">
                 <tr>
-                  <th scope="col" class="border-0">Products Ordered</th>
-                  <th scope="col" class="border-0">Order Date & Time</th>
+                  <th scope="col" class="border-0">Appointment With</th>
+                  <th scope="col" class="border-0">Appointment Date & Time</th>
                   <th scope="col" class="border-0">Customer Name</th>
                   <th scope="col" class="border-0">Customer Mobile</th>
-                  <th scope="col" class="border-0">Customer Location</th>
-                  <th scope="col" class="border-0">Total Cost</th>
+                  <th scope="col" class="border-0">Cost</th>
                   <th scope="col" class="border-0">Actions</th>
                 </tr>
               </thead>
@@ -64,7 +51,7 @@
                   <td>{{item.mobile}}</td>
                   <td>{{item.address}}</td>
                   <td>Ksh{{item.cost}}</td>
-                  <td><button class="button" @click="completeOrder(item)">Complete</button><button class="buttonCom" @click="deleteOrder(item._id)">Delete</button></td>
+                  <td><button class="button" @click="completeOrder(item)">Confirm</button><button class="buttonCom" @click="deleteOrder(item._id)">Delete</button></td>
                   
                 </tr>
               </tbody>
@@ -181,9 +168,9 @@ export default {
       // PostsListFour,
       isImageModalActive: false,
       ordersData:null,
-      query: {
-          search_input: ''
-        },
+      query:{
+        search:''
+      }
     };
   },
   created(){
@@ -327,4 +314,3 @@ export default {
   font-family: '微软雅黑',arail;
 }
 </style>
-
